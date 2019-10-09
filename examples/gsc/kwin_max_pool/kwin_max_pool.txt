@@ -1,0 +1,39 @@
+(torch1_2) Kevins-MacBook-Pro:gsc khunter$ python run_gsc_super_super_sparse.py --pretrained
+Model:
+LeSparseNet(
+  (cnn1_cnn): SparseWeights2d(
+    weight_sparsity=0.5
+    (module): Conv2d(1, 64, kernel_size=(5, 5), stride=(1, 1))
+  )
+  (cnn1_bn): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+  (cnn1_kwinner): KWinners2d(channels=64, n=0, percent_on=0.095, boost_strength=0.10768462717533112, boost_strength_factor=0.9, k_inference_factor=1.0, duty_cycle_period=1000)
+  (cnn1_maxpool): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  (cnn2_cnn): SparseWeights2d(
+    weight_sparsity=0.2
+    (module): Conv2d(64, 64, kernel_size=(5, 5), stride=(1, 1))
+  )
+  (cnn2_bn): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+  (cnn2_kwinner): KWinners2d(channels=64, n=0, percent_on=0.125, boost_strength=0.10768462717533112, boost_strength_factor=0.9, k_inference_factor=1.0, duty_cycle_period=1000)
+  (cnn2_maxpool): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  (flatten): Flatten()
+  (linear1): SparseWeights(
+    weight_sparsity=0.05
+    (module): Linear(in_features=1600, out_features=1500, bias=True)
+  )
+  (linear1_bn): BatchNorm1d(1500, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+  (linear1_kwinners): KWinners(n=1500, percent_on=0.1, boost_strength=0.10768462717533112, boost_strength_factor=0.9, k_inference_factor=1.0, duty_cycle_period=1000)
+  (output): Linear(in_features=1500, out_features=12, bias=True)
+  (softmax): LogSoftmax()
+)
+Noise level: 0.0, Results: {'accuracy': 0.9690438871473355, 'loss': 0.1081773479904127, 'total_correct': 2473}                                                                                             
+Noise level: 0.05, Results: {'accuracy': 0.8373824451410659, 'loss': 0.5555294240156311, 'total_correct': 2137}                                                                                            
+Noise level: 0.1, Results: {'accuracy': 0.7092476489028213, 'loss': 0.9343561034964917, 'total_correct': 1810}                                                                                             
+Noise level: 0.15, Results: {'accuracy': 0.6018808777429467, 'loss': 1.2182871660095023, 'total_correct': 1536}                                                                                            
+Noise level: 0.2, Results: {'accuracy': 0.5141065830721003, 'loss': 1.4501714915691124, 'total_correct': 1312}                                                                                             
+Noise level: 0.25, Results: {'accuracy': 0.43808777429467083, 'loss': 1.6503877071751323, 'total_correct': 1118}                                                                                           
+Noise level: 0.3, Results: {'accuracy': 0.37656739811912227, 'loss': 1.838482393366416, 'total_correct': 961}                                                                                              
+Noise level: 0.35, Results: {'accuracy': 0.31700626959247646, 'loss': 1.9802104507494123, 'total_correct': 809}                                                                                            
+Noise level: 0.4, Results: {'accuracy': 0.2629310344827586, 'loss': 2.1078802605034044, 'total_correct': 671}                                                                                              
+Noise level: 0.45, Results: {'accuracy': 0.20650470219435738, 'loss': 2.2298930775035513, 'total_correct': 527}                                                                                            
+Noise level: 0.5, Results: {'accuracy': 0.18808777429467086, 'loss': 2.3073931846499067, 'total_correct': 480}                                                                                             
+(torch1_2) Kevins-MacBook-Pro:gsc khunter$ 

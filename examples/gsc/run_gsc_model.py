@@ -300,6 +300,8 @@ if __name__ == "__main__":
     parser.add_argument("--pretrained", action="store_true")
     parser.add_argument("--seed", type=int, default=-1)
 
+    print("Torch version: ", torch.__version__)
+
     args = parser.parse_args()
 
     if args.seed != -1:
