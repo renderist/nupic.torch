@@ -283,6 +283,7 @@ class GSCSparseCNN(nn.Sequential):
         # Sparse Linear layer
         self.add_module(
             "linear",
+            #SparseWeightsUnstructured( // Uncomment to distribute weights equal in 2D, as opposed to row-by-row
             SparseWeights(
                 nn.Linear(25 * cnn_out_channels[1], linear_units),
                 sparsity=linear_sparsity,

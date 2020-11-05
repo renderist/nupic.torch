@@ -154,6 +154,57 @@ class SparseWeights(SparseWeightsBase):
         self.module.weight.data[self.zero_mask.bool()] = 0
 
 
+class SparseWeightsUnstructured(SparseWeightsBase):
+    """Enforce weight sparsity on linear module during training.
+
+    Sample usage:
+
+      model = nn.Linear(784, 10)
+      model = SparseWeightsUnstructured(model, 0.4)
+
+    :param module:
+      The module to sparsify the weights
+    :param sparsity:
+      Pct of weights that are zero in the layer. Sparsity is applied across
+      entire matrix (unstructured)
+    :param allow_extremes:
+      Allow values sparsity=0 and sparsity=1. These values are often a sign that
+      there is a bug in the configuration, because they lead to Identity and
+      Zero layers, respectively, but they can make sense in scenarios where the
+      mask is dynamic.
+    """
+
+    def __init__(self, module, weight_sparsity=None, sparsity=None,
+                 allow_extremes=False):
+        assert len(module.weight.shape) == 2, "Should resemble a nn.Linear"
+        super(SparseWeightsUnstructured, self).__init__(
+            module, weight_sparsity=weight_sparsity, sparsity=sparsity
+        )
+
+        if allow_extremes:
+            assert 0 <= self.sparsity <= 1
+        else:
+            assert 0 < self.sparsity < 1
+
+        # For each unit, decide which weights are going to be zero
+        in_features = self.module.in_features
+        out_features = self.module.out_features
+        num_nz = int(round((1 - self.sparsity) * in_features*out_features))
+        zero_mask = torch.ones(out_features, in_features, dtype=torch.bool)
+        indices = np.random.choice(in_features*out_features, num_nz)
+        zero_mask.view(-1)[indices] = False
+        # for out_feature in range(out_features):
+        #     in_indices = np.random.choice(in_features, num_nz, replace=False)
+        #     zero_mask[out_feature, in_indices] = False
+        # Use float16 because pytorch distributed nccl doesn't support bools
+        self.register_buffer("zero_mask", zero_mask.half())
+
+        self.rezero_weights()
+
+    def rezero_weights(self):
+        self.module.weight.data[self.zero_mask.bool()] = 0
+
+
 class SparseWeights2d(SparseWeightsBase):
     """Enforce weight sparsity on CNN modules Sample usage:
 
